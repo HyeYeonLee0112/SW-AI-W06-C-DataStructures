@@ -25,7 +25,8 @@ typedef struct _linkedlist{
 ///////////////////////// function prototypes ////////////////////////////////////
 
 // You should not change the prototype of this function
-void frontBackSplitLinkedList(LinkedList* ll, LinkedList *resultFrontList, LinkedList *resultBackList);
+void frontBackSplitLinkedList1(LinkedList* ll, LinkedList *resultFrontList, LinkedList *resultBackList);
+void frontBackSplitLinkedList2(LinkedList* ll, LinkedList *resultFrontList, LinkedList *resultBackList);
 
 void printList(LinkedList *ll);
 void removeAllItems(LinkedList *l);
@@ -33,76 +34,165 @@ ListNode * findNode(LinkedList *ll, int index);
 int insertNode(LinkedList *ll, int index, int value);
 int removeNode(LinkedList *ll, int index);
 
+void testSplit(int arr[], int n){
+    LinkedList ll, front, back;
+
+    ll.head = front.head = back.head = NULL;
+    ll.size = front.size = back.size = 0;
+
+    // 배열 → 리스트
+    for(int i = 0; i < n; i++){
+        insertNode(&ll, ll.size, arr[i]);
+    }
+
+    printf("Original: ");
+    printList(&ll);
+
+    frontBackSplitLinkedList2(&ll, &front, &back);
+
+    printf("Front: ");
+    printList(&front);
+
+    printf("Back: ");
+    printList(&back);
+    printf("\n");
+
+    removeAllItems(&ll);
+    // removeAllItems(&front);
+    // removeAllItems(&back);
+}
 
 ///////////////////////////// main() /////////////////////////////////////////////
 
 int main()
 {
-	int c, i;
-	LinkedList ll;
-	LinkedList resultFrontList, resultBackList;
+	// int c, i;
+	// LinkedList ll;
+	// LinkedList resultFrontList, resultBackList;
 
-	//Initialize the linked list as an empty linked list
-	ll.head = NULL;
-	ll.size = 0;
+	// //Initialize the linked list as an empty linked list
+	// ll.head = NULL;
+	// ll.size = 0;
 
-	//Initialize the front linked list as an empty linked list
-	resultFrontList.head = NULL;
-	resultFrontList.size = 0;
+	// //Initialize the front linked list as an empty linked list
+	// resultFrontList.head = NULL;
+	// resultFrontList.size = 0;
 
-	// Initialize the back linked list as an empty linked list
-	resultBackList.head = NULL;
-	resultBackList.size = 0;
+	// // Initialize the back linked list as an empty linked list
+	// resultBackList.head = NULL;
+	// resultBackList.size = 0;
 
-	printf("1: Insert an integer to the linked list:\n");
-	printf("2: Split the linked list into two linked lists, frontList and backList:\n");
-	printf("0: Quit:\n");
+	// printf("1: Insert an integer to the linked list:\n");
+	// printf("2: Split the linked list into two linked lists, frontList and backList:\n");
+	// printf("0: Quit:\n");
 
-	while (c != 0)
-	{
-	    printf("Please input your choice(1/2/0): ");
-		scanf("%d", &c);
+	// while (c != 0)
+	// {
+	//     printf("Please input your choice(1/2/0): ");
+	// 	scanf("%d", &c);
 
-		switch (c)
-		{
-		case 1:
-			printf("Input an integer that you want to add to the linked list: ");
-			scanf("%d", &i);
-			insertNode(&ll, ll.size, i);
-			printf("The resulting linked list is: ");
-			printList(&ll);
-			break;
-		case 2:
-			printf("The resulting linked lists after splitting the given linked list are:\n");
-			frontBackSplitLinkedList(&ll, &resultFrontList, &resultBackList); // You need to code this function
-			printf("Front linked list: ");
-			printList(&resultFrontList);
-			printf("Back linked list: ");
-			printList(&resultBackList);
-			printf("\n");
-			removeAllItems(&ll);
-			removeAllItems(&resultFrontList);
-			removeAllItems(&resultBackList);
-			break;
-		case 0:
-			removeAllItems(&ll);
-			removeAllItems(&resultFrontList);
-			removeAllItems(&resultBackList);
-			break;
-		default:
-			printf("Choice unknown;\n");
-			break;
-		}
-	}
+	// 	switch (c)
+	// 	{
+	// 	case 1:
+	// 		printf("Input an integer that you want to add to the linked list: ");
+	// 		scanf("%d", &i);
+	// 		insertNode(&ll, ll.size, i);
+	// 		printf("The resulting linked list is: ");
+	// 		printList(&ll);
+	// 		break;
+	// 	case 2:
+	// 		printf("The resulting linked lists after splitting the given linked list are:\n");
+	// 		frontBackSplitLinkedList(&ll, &resultFrontList, &resultBackList); // You need to code this function
+	// 		printf("Front linked list: ");
+	// 		printList(&resultFrontList);
+	// 		printf("Back linked list: ");
+	// 		printList(&resultBackList);
+	// 		printf("\n");
+	// 		removeAllItems(&ll);
+	// 		removeAllItems(&resultFrontList);
+	// 		removeAllItems(&resultBackList);
+	// 		break;
+	// 	case 0:
+	// 		removeAllItems(&ll);
+	// 		removeAllItems(&resultFrontList);
+	// 		removeAllItems(&resultBackList);
+	// 		break;
+	// 	default:
+	// 		printf("Choice unknown;\n");
+	// 		break;
+	// 	}
+	// }
+
+	int a1[] = {2,3,5,6,7};   // 홀수 개
+    int a2[] = {1,2,3,4};     // 짝수 개
+    int a3[] = {10};          // 1개
+
+    testSplit(a1, 5);
+    testSplit(a2, 4);
+    testSplit(a3, 1);
 
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList)
+//주어진 함수 활용
+void frontBackSplitLinkedList1(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList)
 {
-	/* add your code here */
+	int size = ll->size;
+	ListNode *curNode = ll->head;
+
+	for(int i =0; i<size; ++i){
+		
+		if(i < ((size+1)/2))
+			insertNode(resultFrontList, i, curNode->item);
+		else
+			insertNode(resultBackList, i-((size+1)/2), curNode->item);
+		
+		curNode = curNode->next;
+	}
+}
+
+//얕은 복사
+void frontBackSplitLinkedList2(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList)
+{
+	int size = ll->size;
+	int startOfBack = (size+1)/2;
+
+	//resultFrontList 헤드
+	resultFrontList->head = ll->head;
+
+	
+	ListNode *cur = ll->head;
+	ListNode *tmp; //resultBackList리스트의 시작 노드 저장용
+
+	//백 리스트가 시작되는 인덱스까지 가기
+	for(int i=0; i<(startOfBack); ++i){
+		
+		if(i == (startOfBack-1)){
+
+			//resultBackList 시작 노드 임시 저장
+			tmp = cur->next;
+
+			//resultFrontList 꼬리 처리
+			cur->next = NULL; 
+
+			//resultBackList 시작 처리
+			resultBackList->head = tmp;
+
+		}
+
+		// if(cur->next == NULL)
+		// 	break;
+
+		cur = cur->next;
+		
+	}
+	
+	//두 리스트의 개수 처리
+	resultFrontList->size = startOfBack;
+	resultBackList->size = size-startOfBack;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
