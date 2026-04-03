@@ -35,6 +35,10 @@ ListNode * findNode(LinkedList *ll, int index);
 int insertNode(LinkedList *ll, int index, int value);
 int removeNode(LinkedList *ll, int index);
 
+//테스트용
+void buildList(LinkedList *ll, int arr[], int n);
+void testCase(int arr[], int n);
+
 //////////////////////////// main() //////////////////////////////////////////////
 
 int main()
@@ -79,6 +83,17 @@ int main()
 			break;
 		}
 	}
+
+	// int a1[] = {2,3,4,7,15,18};
+    // int a2[] = {2,7,18,3,4,15};
+    // int a3[] = {1,3,5};
+    // int a4[] = {2,4,6};
+
+    // testCase(a1, 6);
+    // testCase(a2, 6);
+    // testCase(a3, 3);
+    // testCase(a4, 3);
+
 	return 0;
 }
 
@@ -86,7 +101,23 @@ int main()
 
 void moveEvenItemsToBack(LinkedList *ll)
 {
-	/* add your code here */
+	int size = ll->size;
+	int index = 0;
+	ListNode *curNode = ll->head;
+
+	for(int i=0; i<size; ++i){
+		int item = curNode->item;
+		curNode = curNode->next;
+		
+		//짝수 찾으면 마지막에 추가
+		if(item%2==0){
+			insertNode(ll, size, item);
+			removeNode(ll, index);
+			--index;
+		}
+
+		++index;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -212,4 +243,31 @@ int removeNode(LinkedList *ll, int index){
 	}
 
 	return -1;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+//테스트 코드용
+void buildList(LinkedList *ll, int arr[], int n){
+    for(int i = 0; i < n; i++){
+        insertNode(ll, ll->size, arr[i]);
+    }
+}
+
+void testCase(int arr[], int n){
+    LinkedList ll;
+    ll.head = NULL;
+    ll.size = 0;
+
+    buildList(&ll, arr, n);
+
+    printf("Original: ");
+    printList(&ll);
+
+    moveEvenItemsToBack(&ll);
+
+    printf("Result: ");
+    printList(&ll);
+    printf("\n");
+
+    removeAllItems(&ll);
 }
