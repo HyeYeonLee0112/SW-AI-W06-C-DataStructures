@@ -8,7 +8,7 @@ Purpose: Implementing the required functions for Question 1 */
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <stdbool.h> 
 //////////////////////////////////////////////////////////////////////////////////
 
 typedef struct _listnode{
@@ -90,7 +90,38 @@ int main()
 
 int insertSortedLL(LinkedList *ll, int item)
 {
-	/* add your code here */
+	
+	ListNode *prevNode = ll->head;
+	int index = 0; //삽입되는 위치
+	bool didFind = false; //리스트에 item이 있는지
+
+	//노드 순회
+	while(prevNode != NULL){
+		int value = prevNode->item;
+
+		if(value < item){
+			prevNode = prevNode->next;
+			++index;
+		}
+		else if(value > item)
+			break;
+		else{
+			//값이 이미 있는 경우
+			didFind = true;
+			break;
+		}
+	}
+
+	//값이 이미 존재한 경우
+	if(didFind==true)
+		return -1;
+	else{
+		
+		if (insertNode(ll, index, item) == -1)
+			return -1;
+		return index;
+	}
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
