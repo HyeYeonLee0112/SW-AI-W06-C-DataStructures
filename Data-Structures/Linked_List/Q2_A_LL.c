@@ -8,7 +8,7 @@ Purpose: Implementing the required functions for Question 2 */
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <stdbool.h> 
 //////////////////////////////////////////////////////////////////////////////////
 
 typedef struct _listnode
@@ -103,7 +103,26 @@ int main()
 
 void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
 {
-    /* add your code here */
+
+	int index = 0;
+	int size;
+	if(ll1->size < ll2->size)
+		size = ll1->size;
+	else
+		size = ll2->size;
+
+	while( index < size ){
+
+		ListNode *node = findNode(ll2, 0);
+		int item = node->item;
+		insertNode(ll1, (index*2+1), item);
+		removeNode(ll2, 0);
+
+		++index;
+
+	}
+
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
